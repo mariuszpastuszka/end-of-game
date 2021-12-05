@@ -6,6 +6,7 @@ import com.example.endofgame.entity.Category;
 import com.example.endofgame.repository.CategoryRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -66,5 +67,15 @@ public class CategoryService {
         log.info("saved object: [{}]", saved);
 
         return converter.fromEntityToDto(saved);
+    }
+
+    // TODO: fix the problem with non existent id
+    @Transactional
+    public void deleteCategoryById(Long idOfCategoryToDelete) {
+        log.info("deleting category with id: [{}]", idOfCategoryToDelete);
+
+        if (repository.existsById(idOfCategoryToDelete)) {
+            repository.deleteById(idOfCategoryToDelete);
+        }
     }
 }
