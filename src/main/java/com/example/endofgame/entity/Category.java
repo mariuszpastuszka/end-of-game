@@ -9,6 +9,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 import java.time.LocalDateTime;
 
@@ -30,4 +32,15 @@ public class Category {
     private LocalDateTime creationTimestamp;
 
     private LocalDateTime updateTimestamp;
+
+    @PrePersist
+    public void beforeSave() {
+        creationTimestamp = LocalDateTime.now();
+        updateTimestamp = LocalDateTime.now();
+    }
+
+    @PreUpdate
+    public void beforeUpdate() {
+        updateTimestamp = LocalDateTime.now();
+    }
 }
