@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -48,9 +49,10 @@ public class CategoryController {
     }
 
     @PostMapping("/categories")
-    public void createNewCategory(@RequestBody CategorySummary newCategory) {
+    public ResponseEntity<CategorySummary> createNewCategory(@RequestBody CategorySummary newCategory) {
         log.info("trying to create new category from request object: [{}]", newCategory);
 
-        service.createNewCategory(newCategory);
+        var createdCategory = service.createNewCategory(newCategory);
+        return ResponseEntity.created(URI.create("/categories/" + createdCategory.id())).body(createdCategory);
     }
 }

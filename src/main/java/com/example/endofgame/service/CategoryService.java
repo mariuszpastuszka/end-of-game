@@ -56,7 +56,7 @@ public class CategoryService {
         return result.map(category -> converter.fromEntityToDto(category));
     }
 
-    public void createNewCategory(CategorySummary newCategory) {
+    public CategorySummary createNewCategory(CategorySummary newCategory) {
         Category toSave = converter.fromDtoToEntity(newCategory);
         Category saved = repository.save(toSave);
 
@@ -64,5 +64,7 @@ public class CategoryService {
         log.info("object before conversion: [{}]", newCategory);
         log.info("object after conversion: [{}]", toSave);
         log.info("saved object: [{}]", saved);
+
+        return converter.fromEntityToDto(saved);
     }
 }
