@@ -48,6 +48,8 @@ public class CategoryController {
         return result;
     }
 
+    // TODO: avoid category duplicates
+    // validate input
     @PostMapping("/categories")
     public ResponseEntity<CategorySummary> createNewCategory(@RequestBody CategorySummary newCategory) {
         log.info("trying to create new category from request object: [{}]", newCategory);
