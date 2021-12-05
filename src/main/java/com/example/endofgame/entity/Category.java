@@ -21,6 +21,8 @@ import java.time.LocalDateTime;
 public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    // please do not use GenerationType.AUTO :)
+//    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     private String name;
