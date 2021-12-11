@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
 
@@ -50,9 +51,8 @@ public class CategoryController {
         return result;
     }
 
-    //TODO validate input
     @PostMapping("/categories")
-    public ResponseEntity<CategorySummary> createNewCategory(@RequestBody CategorySummary newCategory) {
+    public ResponseEntity<CategorySummary> createNewCategory(@RequestBody @Valid CategorySummary newCategory) {
         log.info("trying to create new category from request object: [{}]", newCategory);
 
         var createdCategory = service.createNewCategory(newCategory);
