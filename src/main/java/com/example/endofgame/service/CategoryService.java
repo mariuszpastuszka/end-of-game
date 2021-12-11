@@ -4,6 +4,7 @@ import com.example.endofgame.converter.CategoryConverter;
 import com.example.endofgame.dto.CategorySummary;
 import com.example.endofgame.entity.Category;
 import com.example.endofgame.exception.DeletingNonExistentObject;
+import com.example.endofgame.exception.DuplicateCategoryException;
 import com.example.endofgame.repository.CategoryRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -58,7 +59,14 @@ public class CategoryService {
         return result.map(category -> converter.fromEntityToDto(category));
     }
 
+    @Transactional
     public CategorySummary createNewCategory(CategorySummary newCategory) {
+
+        if (repository.existsByName(newCategory.name())) {
+            var exception = new DuplicateCategoryException(String.format("Category with name: [%s] already exists!!!", newCategory.name()));
+            log.warn("problem with creation of new category", exception);
+            throw exception;
+        }
         Category toSave = converter.fromDtoToEntity(newCategory);
         Category saved = repository.save(toSave);
 
@@ -77,7 +85,9 @@ public class CategoryService {
         if (repository.existsById(idOfCategoryToDelete)) {
             repository.deleteById(idOfCategoryToDelete);
         } else {
-            throw new DeletingNonExistentObject(String.format("You're trying to delete non existent category with id: [%d]", idOfCategoryToDelete));
+            var exception = new DeletingNonExistentObject(String.format("You're trying to delete non existent category with id: [%d]", idOfCategoryToDelete));
+            log.warn("problem with deleting category", exception);
+            throw exception;
         }
     }
 }

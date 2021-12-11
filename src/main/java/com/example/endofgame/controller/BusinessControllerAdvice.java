@@ -1,6 +1,7 @@
 package com.example.endofgame.controller;
 
 import com.example.endofgame.dto.ErrorResponse;
+import com.example.endofgame.exception.BusinessException;
 import com.example.endofgame.exception.DeletingNonExistentObject;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,13 +18,23 @@ public class BusinessControllerAdvice {
 //    @ExceptionHandler(value = DeletingNonExistentObject.class)
     @ExceptionHandler(DeletingNonExistentObject.class)
     public ResponseEntity<ErrorResponse> handleNonExistentCategoryEntities(DeletingNonExistentObject exc) {
-        ErrorResponse response = new ErrorResponse(
+        ErrorResponse response = createGenericErrorResponse(HttpStatus.NOT_FOUND, exc);
+        return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(BusinessException.class)
+    public ResponseEntity<ErrorResponse> handleGenericClientError(BusinessException exc) {
+        ErrorResponse response = createGenericErrorResponse(HttpStatus.BAD_REQUEST, exc);
+        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+    }
+
+    private ErrorResponse createGenericErrorResponse(HttpStatus status, BusinessException exc) {
+        return new ErrorResponse(
                 LocalDateTime.now(),
                 "You're do it wrong!!!",
                 exc.getMessage(),
-                HttpStatus.NOT_FOUND.value(),
+                status.value(),
                 ServletUriComponentsBuilder.fromCurrentRequest().build().getPath()
         );
-        return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
     }
 }
