@@ -21,6 +21,7 @@ public class BusinessControllerAdvice {
     @ExceptionHandler(DeletingNonExistentObject.class)
     public ResponseEntity<ErrorResponse> handleNonExistentCategoryEntities(DeletingNonExistentObject exc) {
         ErrorResponse response = createGenericErrorResponse(HttpStatus.NOT_FOUND, exc);
+//        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
         return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
     }
 
