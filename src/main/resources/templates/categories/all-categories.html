@@ -13,6 +13,7 @@
         <td>Category name</td>
         <td>Creation timestamp</td>
         <td>Update timestamp</td>
+        <td>Delete</td>
       </tr>
     </thead>
     <tbody>
@@ -23,6 +24,7 @@
         <td th:text="${cat.name()}">Shopping</td>
         <td th:text="${cat.created()}">2021-10-21</td>
         <td th:text="${cat.updated()}">2021-10-21</td>
+        <td><a th:href="@{'/web/delete-category/' + ${cat.id()}}" href="#">Delete me</a></td>
       </tr>
     </tbody>
   </table>
