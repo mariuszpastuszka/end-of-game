@@ -6,5 +6,10 @@
 </head>
 <body>
   <h2>Add new category</h2>
+  <form action="#" th:action="@{/web/save-category}" method="post">
+    <label for="categoryName">Category name:</label><br>
+    <input type="text" id="categoryName" name="name" value=""><br><br>
+    <input type="submit" value="Submit">
+  </form>
 </body>
 </html>
